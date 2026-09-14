@@ -86,3 +86,35 @@ class SandwichMachine:
         print(f"Your {sandwich_size} sandwich is now being prepared!")
 
 ### Make an instance of SandwichMachine class and write the rest of the codes ###
+SandwichMachine = SandwichMachine(resources)
+on = True
+while on:
+    choice = input("What would you like? (small/ medium/ large/ off/ report) ").strip().lower()
+    if choice == "small" or choice == "medium" or choice == "large":
+        size = choice
+        size_details = recipes[choice]
+        if SandwichMachine.check_resources(size_details["ingredients"]):
+            cash = SandwichMachine.process_coins()
+
+            if SandwichMachine.transaction_result(cash, size_details["cost"]):
+                SandwichMachine.make_sandwich(size, size_details["ingredients"])
+
+                cont = input("Would you like to continue? (y/n) ").strip().lower()
+                if cont == "y":
+                    continue
+                else:
+                    on = False
+
+            else:
+                print("Insufficient money")
+                on = False
+        else:
+            on = False
+    elif choice == "report":
+        for item in resources:
+            print(f"{item}: {resources[item]}")
+    elif choice == "off":
+        print("Goodbye!")
+        on = False
+    else:
+        print("Invalid input, please try again.")
